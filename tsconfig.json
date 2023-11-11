@@ -1,12 +1,36 @@
 {
     "compilerOptions": {
-        "target": "es2016",
+        "target": "es6",
         "module": "commonjs",
-        "outDir": "./build",
         "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "strict": true,
-        "skipLibCheck": true
+        "moduleResolution": "node",
+        "removeComments": true,
+        "sourceMap": false,
+
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+
+        "skipLibCheck": true,
+        "allowJs": true,
+        // "checkJs": true,
+
+        "strict": false
     },
-    "include": ["src/**/*"]
+    "include": ["src"],
+    "exclude": ["node_modules", "dist/*", "src/static"],
+    "lib": ["es6"]
 }
+
+// {
+//     "compilerOptions": {
+//         "target": "es2016",
+//         "module": "commonjs",
+//         "outDir": "./build",
+//         "esModuleInterop": true,
+//         "forceConsistentCasingInFileNames": true,
+//         "strict": true,
+//         "skipLibCheck": true
+//     },
+//     "include": ["src/**/*"]
+// }
