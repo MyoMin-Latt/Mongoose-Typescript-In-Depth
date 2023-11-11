@@ -3,17 +3,37 @@ import mongoose from 'mongoose';
 import Author from '../models/Author';
 
 const createAuthor = (req: Request, res: Response, next: NextFunction) => {
-    const { name } = req.body;
+    const { _id, name } = req.body;
 
     const author = new Author({
-        _id: new mongoose.Types.ObjectId(),
+        _id,
         name
     });
 
     return author
         .save()
         .then((author) => res.status(201).json({ author }))
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) => {
+            let mess: String = error.message;
+            if (mess.includes('duplicate key error')) {
+                return Author.findById(_id)
+                    .then((author) => {
+                        if (author) {
+                            author.set(req.body);
+
+                            return author
+                                .save()
+                                .then((author) => res.status(201).json({ author }))
+                                .catch((error) => res.status(500).json({ error }));
+                        } else {
+                            return res.status(404).json({ message: 'not found' });
+                        }
+                    })
+                    .catch((error) => res.status(500).json({ error }));
+            } else {
+                return res.status(500).json({ error: error.message });
+            }
+        });
 };
 
 const readAuthor = (req: Request, res: Response, next: NextFunction) => {
